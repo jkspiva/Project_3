@@ -102,9 +102,9 @@ function updateChart(state, year) {
             datasets: [{
                 label: `Per Capita Consumption in ${state} (${year})`,
                 data: [stateYearData.beer, stateYearData.wine, stateYearData.spirits],
-                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)'],
                 borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                borderWidth: 1
+                borderWidth: 2
             }]
         },
         options: {
@@ -132,13 +132,13 @@ function addChoroplethLayer() {
                 let stateYearData = stateData[state] ? stateData[state].find(d => d.year == currentYear) : null;
                 return stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
             },
-            scale: ["#ffffb2", "#b10026"],
+            scale: ["#ffffcc", "#800026"], // Lighter to darker color scale
             steps: 10,
             mode: "q",
             style: {
-                color: "#fff",
-                weight: 1,
-                fillOpacity: 0.8
+                color: "#000", // Border color
+                weight: 2, // Border width
+                fillOpacity: 0.7 // Fill opacity
             },
             onEachFeature: function(feature, layer) {
                 layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
@@ -175,8 +175,7 @@ function getLatLon(state) {
         'Minnesota': [45.694454, -93.900192],
         'Mississippi': [32.741646, -89.678696],
         'Missouri': [38.456085, -92.288368],
-        'Montana': [46.921925, -110.454353],
-        'Nebraska': [41.125370, -98.268082],
+        'Montana': [46.921925, -110.454353],    'Nebraska': [41.125370, -98.268082],
         'Nevada': [38.313515, -117.055374],
         'New Hampshire': [43.452492, -71.563896],
         'New Jersey': [40.298904, -74.521011],
@@ -200,6 +199,6 @@ function getLatLon(state) {
         'West Virginia': [38.491226, -80.954456],
         'Wisconsin': [44.268543, -89.616508],
         'Wyoming': [42.755966, -107.302490]
-        };
-        return stateLatLon[state];
-        }
+    };
+    return stateLatLon[state];
+}
