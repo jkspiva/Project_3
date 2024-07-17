@@ -139,13 +139,13 @@ function updateChoroplethMap() {
                 let stateYearData = stateData[state] ? stateData[state].find(d => d.year == currentYear) : null;
                 return stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
             },
-            scale: ["#ffffcc", "#800026"], // Lighter to darker color scale
-            steps: 10,
+            scale: ["#ffeda0", "#f03b20"], // Very pronounced color scale
+            steps: 5,
             mode: "q",
             style: {
-                color: "#000", // Border color
-                weight: 2, // Border width
-                fillOpacity: 0.7 // Fill opacity
+                color: "#000",
+                weight: 3, // Thicker border width
+                fillOpacity: 1.0 // Full opacity for strong visibility
             },
             onEachFeature: function(feature, layer) {
                 layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
