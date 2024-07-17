@@ -13,6 +13,7 @@ let stateData = {};
 let allYears = new Set();
 let currentYear = null;
 let selectedState = null;
+let barChart = null;
 
 // Load the CSV data
 d3.csv("Alcohol_Consumption_US.csv").then(function(data) {
@@ -98,18 +99,18 @@ function createPopupContent(state, stateYearData) {
 function updateChart(state, year) {
     let stateYearData = stateData[state].find(d => d.year == year);
     var ctx = document.getElementById('barChart').getContext('2d');
-    if (window.barChart) {
-        window.barChart.destroy();
+    if (barChart) {
+        barChart.destroy();
     }
-    window.barChart = new Chart(ctx, {
+    barChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['Beer', 'Wine', 'Spirits'],
             datasets: [{
                 label: `Per Capita Consumption in ${state} (${year})`,
                 data: [stateYearData.beer, stateYearData.wine, stateYearData.spirits],
-                backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
                 borderWidth: 1
             }]
         },
@@ -169,7 +170,7 @@ function getLatLon(state) {
         'Rhode Island': [41.680893, -71.511780],
         'South Carolina': [33.856892, -80.945007],
         'South Dakota': [44.299782, -99.438828],
-        'Tennessee': [35.747845, -86.692345],
+        'Tennessee':[35.747845, -86.692345],
         'Texas': [31.054487, -97.563461],
         'Utah': [40.150032, -111.862434],
         'Vermont': [44.045876, -72.710686],
