@@ -1,13 +1,22 @@
-// Initialize Leaflet map
+// Initialize Leaflet maps
 let myMap = L.map("map", {
     center: [37.8, -96],
     zoom: 4
 });
 
-// Adding the tile layer
+let choroplethMap = L.map("choroplethMap", {
+    center: [37.8, -96],
+    zoom: 4
+});
+
+// Adding the tile layers
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(choroplethMap);
 
 let stateData = {};
 let allYears = new Set();
@@ -53,6 +62,7 @@ d3.csv("Alcohol_Consumption_US.csv").then(function(data) {
 function updateMapAndChart() {
     currentYear = document.getElementById('yearSelect').value;
     updateMap();
+    updateChoroplethMap();
     if (selectedState) {
         updateChart(selectedState, currentYear);
     }
@@ -78,9 +88,6 @@ function updateMap() {
             });
         }
     });
-
-    // Add choropleth layer
-    addChoroplethLayer();
 }
 
 // Function to create popup content for a marker
@@ -119,10 +126,10 @@ function updateChart(state, year) {
     });
 }
 
-// Function to add the choropleth layer
-function addChoroplethLayer() {
+// Function to update the choropleth map based on the selected year
+function updateChoroplethMap() {
     if (geoJsonLayer) {
-        myMap.removeLayer(geoJsonLayer);
+        choroplethMap.removeLayer(geoJsonLayer);
     }
 
     d3.json("path/to/us-states.geojson").then(function(geoData) {
@@ -143,7 +150,7 @@ function addChoroplethLayer() {
             onEachFeature: function(feature, layer) {
                 layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
             }
-        }).addTo(myMap);
+        }).addTo(choroplethMap);
     });
 }
 
@@ -175,7 +182,8 @@ function getLatLon(state) {
         'Minnesota': [45.694454, -93.900192],
         'Mississippi': [32.741646, -89.678696],
         'Missouri': [38.456085, -92.288368],
-        'Montana': [46.921925, -110.454353],    'Nebraska': [41.125370, -98.268082],
+        'Montana': [46.921925, -110.454353],
+        'Nebraska': [41.125370, -98.268082],
         'Nevada': [38.313515, -117.055374],
         'New Hampshire': [43.452492, -71.563896],
         'New Jersey': [40.298904, -74.521011],
@@ -199,6 +207,6 @@ function getLatLon(state) {
         'West Virginia': [38.491226, -80.954456],
         'Wisconsin': [44.268543, -89.616508],
         'Wyoming': [42.755966, -107.302490]
-    };
-    return stateLatLon[state];
-}
+        };
+        return stateLatLon[state];
+        }

@@ -11,7 +11,8 @@ body {
     text-align: center;
 }
 
-#map {
+#map,
+#choroplethMap {
     height: 60vh;
     margin: 20px auto;
     width: 90%;
