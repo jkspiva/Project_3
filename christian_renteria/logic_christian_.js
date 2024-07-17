@@ -14,6 +14,7 @@ let allYears = new Set();
 let currentYear = null;
 let selectedState = null;
 let barChart = null;
+let geoJsonLayer = null;
 
 // Load the CSV data
 d3.csv("Alcohol_Consumption_US.csv").then(function(data) {
@@ -60,7 +61,7 @@ function updateMapAndChart() {
 // Function to update the map markers and heatmap based on the selected year
 function updateMap() {
     myMap.eachLayer(layer => {
-        if (layer.options && layer.options.pane === 'markerPane') {
+        if (layer.options && (layer.options.pane === 'markerPane' || layer.options.pane === 'overlayPane')) {
             myMap.removeLayer(layer);
         }
     });
@@ -78,16 +79,8 @@ function updateMap() {
         }
     });
 
-    let heatArray = Object.keys(stateData).map(state => {
-        let stateYearData = stateData[state].find(d => d.year == currentYear);
-        let latLon = getLatLon(state);
-        return [latLon[0], latLon[1], stateYearData.beer + stateYearData.wine + stateYearData.spirits];
-    });
-
-    let heat = L.heatLayer(heatArray, {
-        radius: 20,
-        blur: 35
-    }).addTo(myMap);
+    // Add choropleth layer
+    addChoroplethLayer();
 }
 
 // Function to create popup content for a marker
@@ -123,6 +116,34 @@ function updateChart(state, year) {
                 }]
             }
         }
+    });
+}
+
+// Function to add the choropleth layer
+function addChoroplethLayer() {
+    if (geoJsonLayer) {
+        myMap.removeLayer(geoJsonLayer);
+    }
+
+    d3.json("path/to/us-states.geojson").then(function(geoData) {
+        geoJsonLayer = L.choropleth(geoData, {
+            valueProperty: function(feature) {
+                let state = feature.properties.name;
+                let stateYearData = stateData[state] ? stateData[state].find(d => d.year == currentYear) : null;
+                return stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
+            },
+            scale: ["#ffffb2", "#b10026"],
+            steps: 10,
+            mode: "q",
+            style: {
+                color: "#fff",
+                weight: 1,
+                fillOpacity: 0.8
+            },
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
+            }
+        }).addTo(myMap);
     });
 }
 
@@ -170,7 +191,7 @@ function getLatLon(state) {
         'Rhode Island': [41.680893, -71.511780],
         'South Carolina': [33.856892, -80.945007],
         'South Dakota': [44.299782, -99.438828],
-        'Tennessee':[35.747845, -86.692345],
+        'Tennessee': [35.747845, -86.692345],
         'Texas': [31.054487, -97.563461],
         'Utah': [40.150032, -111.862434],
         'Vermont': [44.045876, -72.710686],
