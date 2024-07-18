@@ -132,23 +132,28 @@ function updateChoroplethMap() {
         choroplethMap.removeLayer(geoJsonLayer);
     }
 
-    d3.json("path/to/us-states.geojson").then(function(geoData) {
+    d3.json("statesdata.json").then(function(geoData) {
         geoJsonLayer = L.choropleth(geoData, {
             valueProperty: function(feature) {
                 let state = feature.properties.name;
                 let stateYearData = stateData[state] ? stateData[state].find(d => d.year == currentYear) : null;
-                return stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
+                if (!stateYearData) {
+                    return 0;
+                }
+                return stateYearData.beer + stateYearData.wine + stateYearData.spirits;
             },
-            scale: ["#ffeda0", "#f03b20"], // Very pronounced color scale
-            steps: 5,
-            mode: "q",
+            scale: ["#ff6384", "#36a2eb", "#ffce56"], // Colors from the bar chart
+            steps: 3, // One step per type of alcohol
+            mode: "q", // Quantile mode
             style: {
                 color: "#000",
-                weight: 3, // Thicker border width
-                fillOpacity: 1.0 // Full opacity for strong visibility
+                weight: 2,
+                fillOpacity: 0.8 // Strong visibility
             },
             onEachFeature: function(feature, layer) {
-                layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
+                let stateYearData = stateData[feature.properties.name] ? stateData[feature.properties.name].find(d => d.year == currentYear) : null;
+                let totalConsumption = stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
+                layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${totalConsumption}`);
             }
         }).addTo(choroplethMap);
     });
