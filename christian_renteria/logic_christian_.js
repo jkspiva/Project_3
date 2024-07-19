@@ -145,6 +145,11 @@ function updateChoroplethMap() {
                 let stateYearData = stateData[feature.properties.name] ? stateData[feature.properties.name].find(d => d.year == currentYear) : null;
                 let totalConsumption = stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
                 layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${totalConsumption}`);
+                layer.on('click', function() {
+                    selectedState = feature.properties.name;
+                    updateChart(selectedState, currentYear);
+                    confettiEffect(); // Trigger confetti effect
+                });
             }
         }).addTo(myMap);
     });
@@ -205,4 +210,13 @@ function getLatLon(state) {
         'Wyoming': [42.755966, -107.302490]
         };
         return stateLatLon[state];
+        }
+
+        // Function to trigger confetti effect
+        function confettiEffect() {
+        confetti({
+        particleCount: 200,
+        spread: 160,
+        origin: { y: 0.6 }
+        });
         }
