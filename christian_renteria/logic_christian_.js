@@ -1,22 +1,13 @@
-// Initialize Leaflet maps
+// Initialize Leaflet map
 let myMap = L.map("map", {
     center: [37.8, -96],
     zoom: 4
 });
 
-let choroplethMap = L.map("choroplethMap", {
-    center: [37.8, -96],
-    zoom: 4
-});
-
-// Adding the tile layers
+// Adding the tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(choroplethMap);
 
 let stateData = {};
 let allYears = new Set();
@@ -129,10 +120,10 @@ function updateChart(state, year) {
 // Function to update the choropleth map based on the selected year
 function updateChoroplethMap() {
     if (geoJsonLayer) {
-        choroplethMap.removeLayer(geoJsonLayer);
+        myMap.removeLayer(geoJsonLayer);
     }
 
-    d3.json("../Foster's_folder/statesdata.json").then(function(geoData) {
+    d3.json("statesdata.json").then(function(geoData) {
         geoJsonLayer = L.choropleth(geoData, {
             valueProperty: function(feature) {
                 let state = feature.properties.name;
@@ -155,7 +146,7 @@ function updateChoroplethMap() {
                 let totalConsumption = stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0;
                 layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${totalConsumption}`);
             }
-        }).addTo(choroplethMap);
+        }).addTo(myMap);
     });
 }
 
