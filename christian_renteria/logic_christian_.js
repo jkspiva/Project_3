@@ -132,7 +132,7 @@ function updateChoroplethMap() {
         choroplethMap.removeLayer(geoJsonLayer);
     }
 
-    d3.json("statesdata.json").then(function(geoData) {
+    d3.json("../Foster's_folder/statesdata.json").then(function(geoData) {
         geoJsonLayer = L.choropleth(geoData, {
             valueProperty: function(feature) {
                 let state = feature.properties.name;
