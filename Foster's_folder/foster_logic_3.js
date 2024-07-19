@@ -86,7 +86,7 @@ function loadChart(csvFile) {
                             display: true,
                             text: 'Per Capita Consumption'
                         },
-                        beginAtZero: true // Start y-axis from zero
+                        beginAtZero: true 
                     }
                 }
             }
