@@ -1,0 +1,47 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#controls {
+    margin: 20px;
+    text-align: center;
+}
+
+#map,
+#choroplethMap {
+    height: 60vh;
+    margin: 20px auto;
+    width: 90%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+canvas {
+    display: block;
+    margin: 20px auto;
+    max-width: 90%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #ffed4a;
+    color: #4a4a4a;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #4a4a4a;
+}

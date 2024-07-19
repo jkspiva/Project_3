@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alcohol Consumption in US</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-    <script src="leaflet-heat.js"></script>
+    <title>Choropleth Map Example</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- D3 JavaScript -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Your custom CSS if needed -->
+    <style>
+        #map { height: 600px; }
+    </style>
 </head>
 <body>
-    <div id="map" style="height: 500px;"></div>
-    <canvas id="barChart" width="400" height="200"></canvas>
-    <script src="foster_logic_2.js"></script>
+    <div id="map"></div>
+
+    <!-- Your custom JavaScript -->
+    <script src="foster_logic.js"></script>
 </body>
 </html>

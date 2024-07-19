@@ -1,21 +1,32 @@
-// Initialize Leaflet map
-let myMap = L.map("map").setView([37.8, -96], 4);
+// Initialize Leaflet maps
+let myMap = L.map("map", {
+    center: [37.8, -96],
+    zoom: 4
+});
 
-// Adding the tile layer
+let choroplethMap = L.map("choroplethMap", {
+    center: [37.8, -96],
+    zoom: 4
+});
+
+// Adding the tile layers
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
 
-// Define global variables for data
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(choroplethMap);
+
 let stateData = {};
 let allYears = new Set();
 let currentYear = null;
 let selectedState = null;
+let barChart = null;
+let geoJsonLayer = null;
 
 // Load the CSV data
-d3.csv("alc.csv").then(function(data) {
-    // Process data
+d3.csv("Alcohol_Consumption_US.csv").then(function(data) {
     data.forEach(d => {
         if (!stateData[d.State]) {
             stateData[d.State] = [];
@@ -24,7 +35,8 @@ d3.csv("alc.csv").then(function(data) {
             year: +d.Year,
             beer: +d["Beer (Per capita consumption)"],
             wine: +d["Wine (Per capita consumption)"],
-            spirits: +d["Spirits (Per capita consumption)"]
+            spirits: +d["Spirits (Per capita consumption)"],
+            all: +d["All beverages (Per capita consumption)"]
         });
         allYears.add(+d.Year);
     });
@@ -49,8 +61,9 @@ d3.csv("alc.csv").then(function(data) {
 
 // Function to update the map and chart based on the selected year
 function updateMapAndChart() {
-    currentYear = +document.getElementById('yearSelect').value; // Convert to number
+    currentYear = document.getElementById('yearSelect').value;
     updateMap();
+    updateChoroplethMap();
     if (selectedState) {
         updateChart(selectedState, currentYear);
     }
@@ -58,35 +71,24 @@ function updateMapAndChart() {
 
 // Function to update the map markers and heatmap based on the selected year
 function updateMap() {
-    // Clear existing markers and heatmap
-    Object.keys(stateData).forEach(state => {
-        let stateYearData = stateData[state].find(d => d.year === currentYear);
-        if (stateYearData) {
-            let latLng = getLatLon(state);
-            if (latLng) {
-                // Add marker to map
-                let marker = L.marker(latLng).addTo(myMap);
-                marker.bindPopup(createPopupContent(state, stateYearData));
-                marker.on('click', function() {
-                    selectedState = state;
-                    updateChart(selectedState, currentYear);
-                });
-            }
+    myMap.eachLayer(layer => {
+        if (layer.options && (layer.options.pane === 'markerPane' || layer.options.pane === 'overlayPane')) {
+            myMap.removeLayer(layer);
         }
     });
 
-    // Create heatArray for heatmap layer
-    let heatArray = Object.keys(stateData).map(state => {
-        let stateYearData = stateData[state].find(d => d.year === currentYear);
-        let latLng = getLatLon(state);
-        return latLng ? [latLng[0], latLng[1], stateYearData ? stateYearData.beer + stateYearData.wine + stateYearData.spirits : 0] : null;
-    }).filter(item => item !== null);
-
-    // Add heatmap layer to map
-    let heat = L.heatLayer(heatArray, {
-        radius: 20,
-        blur: 35
-    }).addTo(myMap);
+    Object.keys(stateData).forEach(state => {
+        let stateYearData = stateData[state].find(d => d.year == currentYear);
+        let latLon = getLatLon(state);
+        if (latLon) {
+            let marker = L.marker(latLon).addTo(myMap);
+            marker.bindPopup(createPopupContent(state, stateYearData));
+            marker.on('click', function() {
+                selectedState = state;
+                updateChart(state, currentYear);
+            });
+        }
+    });
 }
 
 // Function to create popup content for a marker
@@ -94,35 +96,63 @@ function createPopupContent(state, stateYearData) {
     return `<b>${state}</b><br>Beer: ${stateYearData.beer}<br>Wine: ${stateYearData.wine}<br>Spirits: ${stateYearData.spirits}`;
 }
 
-// Function to update the bar chart based on selected state and year
+// Function to update the bar chart based on the selected year and state
 function updateChart(state, year) {
-    let stateYearData = stateData[state].find(d => d.year === year);
-    if (stateYearData) {
-        // Update chart data
-        let ctx = document.getElementById('barChart').getContext('2d');
-        let barChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Beer', 'Wine', 'Spirits'],
-                datasets: [{
-                    label: 'Per Capita Consumption',
-                    data: [stateYearData.beer, stateYearData.wine, stateYearData.spirits],
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+    let stateYearData = stateData[state].find(d => d.year == year);
+    var ctx = document.getElementById('barChart').getContext('2d');
+    if (barChart) {
+        barChart.destroy();
     }
+    barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Beer', 'Wine', 'Spirits'],
+            datasets: [{
+                label: `Per Capita Consumption in ${state} (${year})`,
+                data: [stateYearData.beer, stateYearData.wine, stateYearData.spirits],
+                backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+}
+
+// Function to update the choropleth map based on the selected year
+function updateChoroplethMap() {
+    if (geoJsonLayer) {
+        choroplethMap.removeLayer(geoJsonLayer);
+    }
+
+    d3.json("statesdata.json").then(function(geoData) {
+        geoJsonLayer = L.choropleth(geoData, {
+            valueProperty: function(feature) {
+                let state = feature.properties.name;
+                let stateYearData = stateData[state] ? stateData[state].find(d => d.year == currentYear) : null;
+                return stateYearData ? stateYearData.all : 0;
+            },
+            scale: ["#ffeda0", "#f03b20"], // Very pronounced color scale
+            steps: 5,
+            mode: "q",
+            style: {
+                color: "#000",
+                weight: 3, // Thicker border width
+                fillOpacity: 1.0 // Full opacity for strong visibility
+            },
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup(`<b>${feature.properties.name}</b><br>Total Consumption: ${feature.properties.value}`);
+            }
+        }).addTo(choroplethMap);
+    });
 }
 
 // Function to return the latitude and longitude for a given state
@@ -178,5 +208,6 @@ function getLatLon(state) {
         'West Virginia': [38.491226, -80.954456],
         'Wisconsin': [44.268543, -89.616508],
         'Wyoming': [42.755966, -107.302490]
-    };
-    return stateLatLon[state];
+        };
+        return stateLatLon[state];
+        }
