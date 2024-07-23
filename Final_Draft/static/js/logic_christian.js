@@ -16,7 +16,7 @@ let selectedState = null;
 let pieChart = null;
 
 // Load the CSV data
-d3.csv("Alcohol_Consumption_US.csv").then(function(data) {
+d3.csv("Source_Data/Alcohol_Consumption_US.csv").then(function(data) {
     data.forEach(d => {
         if (!stateData[d.State]) {
             stateData[d.State] = [];
