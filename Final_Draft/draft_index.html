@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alcohol Consumption in USA</title>
+    
+</head>
+<body>
+    <h1 id="title">Alcohol Consumption in the USA</h1>
+    <div id="controls">
+        <label for="yearSelect">Select Year: </label>
+        <select id="yearSelect" onchange="updateMapAndChart()">
+            <!-- Options will be populated dynamically -->
+        </select>
+    </div>
+    <div id="map" style="height: 60vh;"></div>
+    <canvas id="barChart" width="800" height="400"></canvas>
+
+    <div id="chartsContainer">
+        <select id="chartSelector">
+            <option value="Outputs/2001_alc_data.csv">Data 2001</option>
+            <option value="Outputs/2002_alc_data.csv">Data 2002</option>
+            <option value="Outputs/2003_alc_data.csv">Data 2003</option>
+            <option value="Outputs/2004_alc_data.csv">Data 2004</option>
+            <option value="Outputs/2005_alc_data.csv">Data 2005</option>
+            <option value="Outputs/2006_alc_data.csv">Data 2006</option>
+            <option value="Outputs/2007_alc_data.csv">Data 2007</option>
+            <option value="Outputs/2008_alc_data.csv">Data 2008</option>
+            <option value="Outputs/2009_alc_data.csv">Data 2009</option>
+            <option value="Outputs/2010_alc_data.csv">Data 2010</option>
+            <option value="Outputs/2011_alc_data.csv">Data 2011</option>
+            <option value="Outputs/2012_alc_data.csv">Data 2012</option>
+            <option value="Outputs/2013_alc_data.csv">Data 2013</option>
+            <option value="Outputs/2014_alc_data.csv">Data 2014</option>
+            <option value="Outputs/2015_alc_data.csv">Data 2015</option>
+            <option value="Outputs/2016_alc_data.csv">Data 2016</option>
+        </select>
+    </div>
+
+    <div id="chartDisplay">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <button onclick="openAllBeveragesPage()">Open All Beverages Chart</button>
+
+    <link rel="stylesheet" href="static/css/christian_style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.min.js"></script>
+
+    <!-- Confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1"></script> 
+
+    <script src="static/js/logic_christian.js"></script>
+    <script src="static/js/foster_logic_3.js"></script>
+    
+</body>
+</html>
