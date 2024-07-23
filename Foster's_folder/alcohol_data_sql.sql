@@ -74,3 +74,7 @@ where year = 2002
 select *
 from alcohol
 where year = 2001
+
+select AVG(all_alc)
+from alcohol
+where state = 'New Hampshire'
