@@ -28,7 +28,6 @@ chartSelector.addEventListener('change', function() {
 
 function loadChart(csvFile) {
     d3.csv(csvFile).then(function(data) {
-        // Assuming the CSV data has columns like 'state', 'beer_per_capita', 'wine_per_capita', etc.
         let states = data.map(d => d.state);
         let beerData = data.map(d => parseFloat(d.beer_per_capita));
         let wineData = data.map(d => parseFloat(d.wine_per_capita));
