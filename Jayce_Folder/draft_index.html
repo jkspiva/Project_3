@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alcohol Consumption in US</title>
+    <link rel="stylesheet" href="christian_style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="leaflet-heat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-choropleth/1.0.0/choropleth.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1"></script> <!-- Confetti library -->
+</head>
+<body>
+    <h1 id="title">Alcohol Consumption in the USA</h1>
+    <div id="controls">
+        <label for="yearSelect">Select Year: </label>
+        <select id="yearSelect" onchange="updateMapAndChart()">
+            <!-- Options will be populated dynamically -->
+        </select>
+    </div>
+    <div id="map" style="height: 60vh;"></div>
+    <canvas id="barChart" width="800" height="400"></canvas>
+    <script src="logic_christian.js"></script>
+</body>
+</html>
