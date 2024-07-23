@@ -58,7 +58,7 @@ function updateMapAndChart() {
     }
 }
 
-// Function to update the map markers and heatmap based on the selected year
+// Function to update the map markers based on the selected year
 function updateMap() {
     myMap.eachLayer(layer => {
         if (layer.options && (layer.options.pane === 'markerPane' || layer.options.pane === 'overlayPane')) {
@@ -93,6 +93,10 @@ function updateChart(state, year) {
     if (pieChart) {
         pieChart.destroy();
     }
+
+    // Update the state name above the chart
+    document.getElementById('stateName').innerText = `Alcohol Consumption in ${state} (${year})`;
+
     pieChart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -188,16 +192,20 @@ function getLatLon(state) {
         'West Virginia': [38.491226, -80.954456],
         'Wisconsin': [44.268543, -89.616508],
         'Wyoming': [42.755966, -107.302490]
-    };
-    return stateLatLon[state];
-}
+        };
+        return stateLatLon[state];
+        }
+        
+        // Function to trigger confetti effect
+        function confettiEffect() {
+        confetti({
+        particleCount: 200,
+        spread: 160,
+        origin: { y: 0.6 }
+        });
+        }
 
-// Function to trigger confetti effect
-function confettiEffect
-() {
-    confetti({
-    particleCount: 200,
-    spread: 160,
-    origin: { y: 0.6 }
-    });
-    }
+// Function to open the all beverages chart page
+function openAllBeveragesPage() {
+    window.location.href = "all_beverages.html";
+}       
