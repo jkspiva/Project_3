@@ -83,21 +83,7 @@ function updateMap() {
 
 // Function to create popup content for a marker
 function createPopupContent(state, stateYearData) {
-    return `
-        <div style="
-            border: 4px dashed #ff69b4; /* Hot pink border */
-            border-radius: 10px;
-            background-color: #f0e68c; /* Khaki background */
-            padding: 10px;
-            text-align: center;
-            color: #000;
-            font-weight: bold;
-        ">
-            <b style="color: #ff4500; text-shadow: 1px 1px #000;">${state}</b><br>
-            <span style="color: #1e90ff;">Beer:</span> <span style="color: #228b22;">${stateYearData.beer}</span><br>
-            <span style="color: #1e90ff;">Wine:</span> <span style="color: #8b008b;">${stateYearData.wine}</span><br>
-            <span style="color: #1e90ff;">Spirits:</span> <span style="color: #ffd700;">${stateYearData.spirits}</span>
-        </div>`;
+    return `<b>${state}</b><br>Beer: ${stateYearData.beer}<br>Wine: ${stateYearData.wine}<br>Spirits: ${stateYearData.spirits}`;
 }
 
 // Function to update the pie chart based on the selected year and state
