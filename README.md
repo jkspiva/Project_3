@@ -1,6 +1,13 @@
-Project Purpose: Visualization of the consumption trends of Alcohol accross all states Per year.
-Overview: The project is going to have 2 HTML pages in the final draft that visualizes the alcohol consumption through a pie chart and a bar graph. 
-Instructions on how to use and interact with the project:
+Purpose and Overview: 
+We wanted to see what the alcohol consumption trends are in the United States over the years. This information can be used across many different industries- healthcare (see which states need to cutback on alcohol consumption due to various health reasons), sales (which states are target market for certain alcohol sales).
 
-There are folders for each person that worked on this project with individual efforts that in the end we narrowed down and collected into one folder "final_draft".
-Data was originally collected from:
+This project visualizes alcohol consumption data in the United States from the years 1977 - 2016 onto two different HTML pages.
+
+
+Instructions on how to use and interact with the project: Go to the website, select the year and click on the state markers to view alcohol consumption data for said state in numerical form and in pie chart form. At the bottom of the webpage is a button that will bring you to another HTML page where you can view alcohol consumption data in bar chart form by year. Data can be chosen to be omitted by clicking on legend at the top of the page.
+
+
+Ethical Considerations: Our dataset was taken from a public kaggle page 'https://www.kaggle.com/datasets/linzey/alcohol-consumption-us' and being used solely for educational purposes. 
+
+
+Final version of this project is located within the 'Final_Draft' folder. Other folders include work done by contributors of this project. 
