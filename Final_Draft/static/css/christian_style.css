@@ -9,13 +9,13 @@ body {
 #title {
     text-align: center;
     font-size: 3em;
-    color: #00897b; /* Teal */
-    text-shadow: 2px 2px #004d40; /* Darker teal shadow */
+    color: #a30b06; /* Teal */
+    text-shadow: 2px 2px #6b6f96; /* Darker teal shadow */
     margin-top: 20px;
     padding: 10px;
-    border: 4px solid #004d40; /* Darker teal border */
+    border: 4px solid #001694; /* Darker teal border */
     border-radius: 15px;
-    background-color: #b2dfdb; /* Light teal */
+    background-color: #ffffff; /* Light teal */
     box-shadow: 0 0 10px rgba(0, 77, 64, 0.5); /* Teal shadow */
 }
 
@@ -28,7 +28,7 @@ body {
 #yearSelect {
     padding: 10px;
     border-radius: 10px;
-    border: 2px solid #00897b; /* Teal border */
+    border: 2px solid #001694; /* Teal border */
     background-color: #b2dfdb; /* Light teal */
     color: #333;
     font-size: 1em;
@@ -39,7 +39,7 @@ body {
     width: 90%;
     height: 60vh;
     margin: 20px auto;
-    border: 4px solid #00897b; /* Teal border */
+    border: 4px solid #001694; /* Teal border */
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 77, 64, 0.5); /* Teal shadow */
 }
@@ -48,7 +48,7 @@ body {
     width: 400px;
     height: 400px;
     margin: 20px auto;
-    border: 4px solid #00897b; /* Teal border */
+    border: 4px solid #001694; /* Teal border */
     border-radius: 12px;
     background-color: #fff;
     padding: 10px;

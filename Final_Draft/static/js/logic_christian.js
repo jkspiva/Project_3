@@ -209,3 +209,8 @@ function getLatLon(state) {
 function openAllBeveragesPage() {
     window.location.href = "all_beverages.html";
 }       
+
+// Function to open the Seaborn linegraph page
+function openLineGraphPage() {
+    window.location.href = "linegraph.html";
+}       
